@@ -17,7 +17,6 @@ class Game extends React.Component {
     }
   }
 
-
   handleClick = (i) => {
     let stepNumber = this.state.stepNumber + 1;
     let history = this.state.history.slice(0, stepNumber);
@@ -73,12 +72,41 @@ class Game extends React.Component {
     const list = this.state.history.map((move, index) => {
       return <li key={index}> 
                 <button onClick={ () => { this.setState({stepNumber: index, isXNext: index%2 == 0})} }> 
-                    { index == 0? 'Go to Game start' : `Go to move # ${index}`}
+                    { index == 0? 'Go to Game start' : `Go to move #${index} ${this.determineMoveLocation(index)}`}
                 </button> 
               </li>
     });
 
     return list;
+  }
+
+  // this function determines the coordinates of the latest move
+  // it does by comparing the current and previous squares 
+  determineMoveLocation = (index) => {
+    const currentSquare = this.state.history[index].squares;
+    const prevSquare = this.state.history[index-1].squares;
+    let locationIndex; 
+
+    for(let i = 0; i <= 8; i++) {
+      // If currentSquare has value, but the previous square has not.
+      // This indicates that the index is where the latest move happened
+      if(currentSquare[i] && !prevSquare[i]) {  
+        locationIndex=i;
+      }
+    }
+
+    // returns the coordinates according to the moves
+    switch(locationIndex) {
+      case 0: return '(0,0)';
+      case 1: return '(1,0)';
+      case 2: return '(2,0)';
+      case 3: return '(0,1)';
+      case 4: return '(1,1)';
+      case 5: return '(2,1)';
+      case 6: return '(0,2)';
+      case 7: return '(1,2)';
+      case 8: return '(2,2)';
+    }
   }
 
   render() {
