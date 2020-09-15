@@ -70,8 +70,16 @@ class Game extends React.Component {
   // if the stepNumber is even, it's X's turn and vice versa
   handleHistory = () => {
     const list = this.state.history.map((move, index) => {
+      let buttonStyle = {
+        fontWeight: 'bold',
+        border: '2px dotted red',
+        outline: 'none'
+      };
+      
+      if(this.state.stepNumber !== index) buttonStyle=null;
+
       return <li key={index}> 
-                <button onClick={ () => { this.setState({stepNumber: index, isXNext: index%2 == 0})} }> 
+                <button style={buttonStyle} onClick={ () => { this.setState({stepNumber: index, isXNext: index%2 == 0})} }> 
                     { index == 0? 'Go to Game start' : `Go to move #${index} ${this.determineMoveLocation(index)}`}
                 </button> 
               </li>
@@ -81,7 +89,7 @@ class Game extends React.Component {
   }
 
   // this function determines the coordinates of the latest move
-  // it does by comparing the current and previous squares 
+  // it does by comparing the current and previous squares in the history
   determineMoveLocation = (index) => {
     const currentSquare = this.state.history[index].squares;
     const prevSquare = this.state.history[index-1].squares;
