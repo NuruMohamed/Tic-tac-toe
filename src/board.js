@@ -8,26 +8,30 @@ class Board extends React.Component {
       return <Square onClick={() => this.props.onClick(i)} value = {this.props.squares[i]}/>;
     }
 
+    // function calls renderSquare function for each square and organizes them
+    callSquares() {
+      let squaresContainer = [];
+      // keep track of the square indexs or the argument to be sent to renderSquare 
+      let count = 0;
+
+      for(let i = 0; i <= 2; i++) {
+        // holds columns on each row
+        let columns = [];
+        for(let j = 0; j <= 2; j++) {
+          columns.push(this.renderSquare(count));
+          count++;
+        }
+        // push each row to the container
+        squaresContainer.push(<div key={i} className="board-row"> {columns} </div>);
+      }
+
+      return squaresContainer;
+    }
+
     render() {
-    
       return (
         <div>
-          <div className="status">{/*status*/}</div>
-          <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
-          </div>
+          {this.callSquares()}
         </div>
       );
     }
